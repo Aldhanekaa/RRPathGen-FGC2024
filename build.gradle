@@ -37,14 +37,41 @@ jar {
     }
 }
 
-task customFatJar(type: Jar) {
+//task customFatJar(type: Jar) {
+//    manifest {
+//        attributes 'Main-Class': 'jarhead.Main'
+//    }
+////    baseName = 'RRPathGen-FGC2024'
+//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+//    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+//    with jar
+////    archiveBaseName.set('rrpathgen-fgc2024')    // Name of the JAR file
+////    archiveVersion.set('1.0')                // Version of the JAR
+////    archiveClassifier.set('all')             // Optional: to distinguish this JAR
+////
+////    from sourceSets.main.output              // Include compiled classes
+////
+////    // Include dependencies (optional):
+////    dependsOn configurations.runtimeClasspath
+////    from {
+////        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+////    }
+//}
+
+tasks.register('fatJar', Jar) {
     manifest {
         attributes 'Main-Class': 'jarhead.Main'
     }
-    baseName = 'RRPathGen'
+
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
-    with jar
+    archiveBaseName.set('my-application')  // Replace with your application name
+    archiveVersion.set('1.0')
+    archiveClassifier.set('all')
+
+    dependsOn configurations.runtimeClasspath
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    } with jar
 }
 
 test {
